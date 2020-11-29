@@ -35,3 +35,7 @@ npm-debug.log
 
 # Ignore Sobelow output
 .sobelow/
+
+# Ignore dialyzer plts
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

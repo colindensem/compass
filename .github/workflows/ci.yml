@@ -17,11 +17,13 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: compass_test
-        ports: ['5432:5432']
+        ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Setup elixir
       - uses: actions/setup-elixir@v1
         with:
           otp-version: ${{ matrix.otp }}
@@ -32,8 +34,9 @@ jobs:
         with:
           node-version: 12.15.0
 
+      - name: Fetch Mix dependencies cache
       - uses: actions/cache@v1
-        id: deps-cache
+        id: mix-cache
         with:
           path: deps
           key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
@@ -55,20 +58,42 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-      - name: Install deps
+      - name: Install Mix dependencies
+        if: steps.mix-cache.outputs.cache-hit != 'true'
         run: |
+          mix local.rebar --force
+          mix local.hex --force
           mix deps.get
+
+      - name: Install Yarn dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: |
           (cd assets && yarn)
 
       - name: Check Formatting
         run: mix format --check-formatted
 
-      - name : Check Security
+      - name: Check Security
         run: mix sobelow --config
 
       - name: Static Code Analysis
         run: mix credo --strict
 
+      - name: Retrieve PLT Cache
+        uses: actions/cache@v1
+        id: plt-cache
+        with:
+          path: priv/plts
+          key: ${{ runner.os }}-${{ matrix.otp }}-${{ matrix.elixir }}-plts-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+
+      - name: Create PLTs
+        if: steps.plt-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p priv/plts
+          mix dialyzer --plt
+
+      - name: Run dialyzer
+        run: mix dialyzer --no-check --halt-exit-status
 
       - name: Tests
         run: mix test
