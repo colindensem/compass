@@ -15,6 +15,7 @@ defmodule Compass.DataCase do
   """
 
   use ExUnit.CaseTemplate
+  alias Ecto.Adapters.SQL.Sandbox
 
   using do
     quote do
@@ -28,10 +29,10 @@ defmodule Compass.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Compass.Repo)
+    :ok = Sandbox.checkout(Compass.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Compass.Repo, {:shared, self()})
+      Sandbox.mode(Compass.Repo, {:shared, self()})
     end
 
     :ok

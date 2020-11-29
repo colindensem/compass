@@ -1,4 +1,8 @@
 defmodule CompassWeb.Telemetry do
+  @moduledoc """
+  This module defines telemetry metrics
+  """
+
   use Supervisor
   import Telemetry.Metrics
 

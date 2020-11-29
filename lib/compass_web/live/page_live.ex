@@ -1,4 +1,7 @@
 defmodule CompassWeb.PageLive do
+  @moduledoc """
+  This module defines a sample live page
+  """
   use CompassWeb, :live_view
 
   @impl true

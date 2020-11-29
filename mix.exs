@@ -48,7 +48,8 @@ defmodule Compass.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
-      {:sobelow, "~> 0.8", only: [:dev, :test], runtime: false}
+      {:sobelow, "~> 0.8", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.4", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -64,7 +65,7 @@ defmodule Compass.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      quality: ["format", "sobelow --config --verbose"]
+      quality: ["format", "sobelow --config --verbose", "credo --strict"]
     ]
   end
 end

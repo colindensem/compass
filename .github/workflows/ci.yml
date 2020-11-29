@@ -66,5 +66,9 @@ jobs:
       - name : Check Security
         run: mix sobelow --config
 
+      - name: Static Code Analysis
+        run: mix credo --strict
+
+
       - name: Tests
         run: mix test
