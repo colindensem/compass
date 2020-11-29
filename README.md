@@ -9,7 +9,7 @@ mobile compatible interface to their club.
 
 ## Status
 
-![.github/workflows/verify.yml](https://github.com/theclimbersclub/compass/workflows/.github/workflows/ci.yml/badge.svg)
+![.github/workflows/ci.yml](https://github.com/theclimbersclub/compass/workflows/.github/workflows/ci.yml/badge.svg)
 [![GitHub issues](https://img.shields.io/github/issues-raw/theclimbersclub/Compass)](https://github.com/theclimbersclub/compass/issues)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/theclimbersclub/compass/master/LICENSE.md)
 
