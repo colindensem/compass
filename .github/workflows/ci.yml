@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        otp: [22.2.7]
-        elixir: [1.10.3]
+        otp: [22.2.8]
+        elixir: [1.11.2]
 
     services:
       db:
@@ -59,6 +59,12 @@ jobs:
         run: |
           mix deps.get
           (cd assets && yarn)
+
+      - name: Check Formatting
+        run: mix format --check-formatted
+
+      - name : Check Security
+        run: mix sobelow --config
 
       - name: Tests
         run: mix test

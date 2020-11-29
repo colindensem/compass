@@ -1,13 +1,15 @@
 defmodule CompassWeb.Router do
   use CompassWeb, :router
 
+  @csp "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' 'unsafe-eval'"
+
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {CompassWeb.LayoutView, :root}
     plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug :put_secure_browser_headers, %{"content-security-policy" => @csp}
   end
 
   pipeline :api do
