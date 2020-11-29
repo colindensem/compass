@@ -1,12 +1,13 @@
 defmodule CompassWeb.PageController do
   use CompassWeb, :controller
+  alias CompassWeb.Router.Helpers
 
   def index(conn, _params) do
     render(conn, "index.html")
   end
 
   def privacy(conn, _params) do
-    url  = CompassWeb.Router.Helpers.url(conn)
+    url = Helpers.url(conn)
     render(conn, "privacy.html", url: url)
   end
 
