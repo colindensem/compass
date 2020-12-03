@@ -17,7 +17,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: compass_test
-        ports: ['5432:5432']
+        ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -63,12 +63,34 @@ jobs:
       - name: Check Formatting
         run: mix format --check-formatted
 
-      - name : Check Security
+      - name: Check Security
         run: mix sobelow --config
 
       - name: Static Code Analysis
         run: mix credo --strict
 
-
       - name: Tests
         run: mix test
+
+  deploy:
+    needs: ci
+
+    if: github.ref == 'refs/heads/master'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+        # actions/checkout@v2 only checks out the latest commit,
+        # so we need to tell it to check out the entire master branch
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - uses: mhanberg/gigalixir-action@v0.4.0
+        with:
+          GIGALIXIR_USERNAME: ${{ secrets.GIGALIXIR_USERNAME }}
+          GIGALIXIR_PASSWORD: ${{ secrets.GIGALIXIR_PASSWORD }}
+          GIGALIXIR_APP: ${{ secrets.GIGALIXIR_APP }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
