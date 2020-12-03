@@ -20,6 +20,7 @@ defmodule CompassWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    live "/live", PageLive, :index
     get "/privacy", PageController, :privacy
     get "/terms", PageController, :terms
   end
