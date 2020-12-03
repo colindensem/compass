@@ -19,7 +19,10 @@ defmodule CompassWeb.Router do
   scope "/", CompassWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    get "/", PageController, :index
+    live "/live", PageLive, :index
+    get "/privacy", PageController, :privacy
+    get "/terms", PageController, :terms
   end
 
   # Other scopes may use custom stacks.
