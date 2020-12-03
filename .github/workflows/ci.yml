@@ -75,7 +75,7 @@ jobs:
   deploy:
     needs: ci
 
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
 
     runs-on: ubuntu-latest
 
@@ -85,7 +85,7 @@ jobs:
         # actions/checkout@v2 only checks out the latest commit,
         # so we need to tell it to check out the entire master branch
         with:
-          ref: master
+          ref: main
           fetch-depth: 0
 
       - uses: mhanberg/gigalixir-action@v0.4.0
